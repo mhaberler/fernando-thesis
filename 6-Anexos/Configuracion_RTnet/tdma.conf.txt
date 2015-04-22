@@ -1,0 +1,41 @@
+#
+# Examplary TDMA configuration file
+#
+
+# Primary master
+
+master:
+ip 192.168.3.1
+mac F8:1A:67:03:E4:8F
+cycle 100000
+slot 0 100
+slot 1 200
+
+
+# Backup master
+#  Cycle is defined by the primary master
+
+backup-master:
+#ip 10.0.0.2
+#backup-offset 200
+#slot 0 400
+
+
+# Slave A
+#  MAC is unknown, slave will be pre-configured to the given IP
+
+slave:
+ip 192.168.3.2
+mac F8:1A:67:03:EB:84
+slot 0 300
+slot 1 400 1/2
+
+
+# Slave B
+#  IP is assigned to the slave via its known MAC address
+
+#slave:
+#ip 10.0.0.4
+#mac 00:12:34:56:AA:FF
+#slot 0 2400
+#slot 1 2200 2/2

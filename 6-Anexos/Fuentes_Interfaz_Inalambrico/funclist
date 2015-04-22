@@ -1,0 +1,17 @@
+_nRF_Setup: CODE, 1554 0 126
+_SPI_init: CODE, 2194 0 22
+_WriteRegister: CODE, 2140 0 28
+_lookup: SMALLCONST, 1536 0 16
+_main: CODE, 1680 0 112
+_FlushTXRX: CODE, 2168 0 26
+_high_isr: CODE, 8 0 1896
+_InitApp: CODE, 2066 0 44
+__initialization: CODE, 1964 0 42
+_WriteAddress: CODE, 2016 0 50
+_WritePayload: CODE, 1904 0 60
+_TXMode: CODE, 2258 0 16
+_ReadRegister: CODE, 2110 0 30
+_WriteCommand: CODE, 2238 0 20
+_low_isr: CODE, 24 0 16
+_SPI_transfer: CODE, 2216 0 22
+Total: 2526

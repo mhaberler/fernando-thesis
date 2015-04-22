@@ -1,0 +1,19 @@
+component conv_u32_float_signed "Convert a value from u32 to a float infering sign from ceiling value.";
+pin in u32 in_;
+pin out float out;
+ pin out bit wrap """TRUE when 'in' is higher than parameter ceil/2""";
+ param rw u32 ceil """Ceiling of value at 'in'. Value at 'out' is equal to (in - ceil - 1) if 'in' is greater than ceil/2.""";
+function _ "Update 'out' based on 'in'";
+license "GPL";
+
+;;
+FUNCTION(_) {
+	hal_float_t in = in_;
+	if(in > ceil/2) {
+		out = -(ceil+1-in);
+		wrap = 1;
+	} else {
+		out = in;
+		wrap = 0;
+	}
+}

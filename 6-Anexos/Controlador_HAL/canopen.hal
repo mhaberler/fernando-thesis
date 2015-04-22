@@ -1,0 +1,89 @@
+
+
+# carga de componentes HAL
+loadrt canopen inputs=24831 outputs=24675,25600 slavenodeid=2 masternodeid=1 slavesyncs=8 mastersyncs=10 synctime=900
+loadrt threads name1=servo-thread period1=7200000
+loadrt pedestal count=1
+loadrt conv_u32_float_signed names=conv1,conv2
+loadrt conv_float_s32 names=conv3
+loadrt pid num_chan=1
+loadrt scale count=2
+loadrt ddt count=1
+loadrt wcomp count=2
+loadrt and2 count=1
+loadusr halscope
+
+# funciones a ejecutar periódicamente
+addf canopen.0.update servo-thread
+addf conv1 servo-thread
+addf conv2 servo-thread
+addf conv3 servo-thread
+addf pid.0.do-pid-calcs servo-thread
+addf scale.0 servo-thread
+addf scale.1 servo-thread
+addf ddt.0 servo-thread
+addf wcomp.0 servo-thread
+addf wcomp.1 servo-thread
+addf and2.0 servo-thread
+addf pedestal.0 servo-thread
+
+# parámetros para los conversores de unsigned-32 a flotante
+setp conv1.ceil 32767
+setp conv2.ceil 65535
+# parámetros para los comparadores ventana
+setp wcomp.0.min -1500
+setp wcomp.0.max 1500
+setp wcomp.1.min -200
+setp wcomp.1.max 200
+# parámetros para el pedestal de salida
+setp pedestal.0.amount 50
+setp pedestal.0.deadzone 4
+
+# set-point para el lazo de control
+#setp pid.0.command 	0
+#########################
+# parámetros del lazo PID
+setp pid.0.Pgain	2
+setp pid.0.Igain	0.1
+setp pid.0.Dgain	0.5
+#########################
+# parámetro "feedforward", para seguir variaciones del set-point
+setp pid.0.FF0		0
+# limitación de salida
+setp pid.0.maxoutput	500
+# limitación de la integral del error
+setp pid.0.maxerrorI	50
+# control del signo de la acción de control
+setp scale.0.gain 1
+# control de signo y magnitud de realimentación de pos. brazo motorizado
+setp scale.1.gain -0.05
+
+# activamos el lazo
+#setp pid.0.enable 1
+
+###############################
+# conexiones entre componentes:
+###############################
+net pos1_crudo canopen.0.out1 conv1.in
+net pos2_crudo canopen.0.out2 conv2.in
+# posic. brazo libre es toma de realimentación del lado PID
+net pos2 conv2.out pid.0.feedback
+# pos. brazo motorizado se escala e invierte para usar como set-point
+net pos1 conv1.out scale.1.in
+net set_point scale.1.out pid.0.command
+# salida del PID se corrige signo, se aplica pedestal, se convierte a s32  y se envía por canopen como comando de velocidad
+net sal_control_f pid.0.output scale.0.in
+net sal_control_f2 scale.0.out pedestal.0.in
+net sal_control_f3 pedestal.0.out conv3.in
+net sal_control conv3.out canopen.0.in1
+# lógica de habilitación del lazo PID
+net pos1 ddt.0.in
+net vel1 ddt.0.out wcomp.0.in
+net vel1_peq wcomp.0.out and2.0.in0
+net pos2 wcomp.1.in
+net pos2_peq wcomp.1.out and2.0.in1
+net hab_pid and2.0.out pid.0.enable
+
+start
+show
+

@@ -1,0 +1,11 @@
+﻿Diccionario de objetos (para el apéndice)
+La librería XMOS utilizada (module_canopen y module_can) incluye un compilador de “Electronic Data Sheets” o EDS llamado “od_generator.py”. EDS es un archivo tageado que describe un dispositivo CANopen, fundamentalmente su diccionario de objetos y algunos detalles más. El compilador genera un archivo .h donde se definen las estructuras necesarias para implementar el Diccionario de Objetos del dispositivo CANopen.
+
+
+El EDS es un formato tedioso de interpretar directamente y existen utilidades para asistir en su edición. Se utilizó con éxito la aplicación Vector CANeds (o CANeds) bajo Wine con la única salvedad que es requerida una conversión de formato de texto a Unix antes de poder procesar el archivo EDS con la utilidad od_generator.
+La línea de comandos para convertir:
+awk '{ sub("\r$", ""); print }' co_eds_401.eds > CO_EDS_401.eds
+Donde el archivo en minúsculas es generado por CANeds y el archivo con mayúsculas es pasado al od_generator (con comando >python od_generator.py).
+
+
+        Tener en cuenta al agregar objetos en CANeds que el compilador od_generator no incluye en el .h generado los objetos que no tengan inicializado el campo de valor por defecto.

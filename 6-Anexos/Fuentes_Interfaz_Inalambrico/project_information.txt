@@ -1,0 +1,23 @@
+Contador de encoder en cuadratura con conexión inalámbrica nRF24L01
+-------------------------------------------------------------------
+
+Project Owner(s): Daniel García, Fernando Mederos
+Author(s): Fernando Mederos
+Hardware Platform: PIC16F876A
+Debuggers Used: PICkit3
+Programmers Used: PICkit3
+MPLAB Version: X1.85
+C Compiler Version: XC8 1.20
+Final Checksum:
+
+   Código basado en la publicacion de Jonathan Nethercott "Wireless Communication
+using the nRF24L01 Module" para el micro PIC16F1455.
+http://wordpress.codewrite.co.uk/pic/2013/12/11/nrf24l01sw/
+https://github.com/codewrite/keyfob1
+
+
+   Funcionamiento:
+   -Entradas de encoder óptico rotativo A,B en cuadratura de nivel TTL 3.3V
+   -Líneas de comunicación SPI con extras (CE, IRQ) para módulo nRF24L01+
+   -Oscilador RC C=20pF, R=6K8, Fosc?3.5MHz
+   -Alimentación desde batería 3V

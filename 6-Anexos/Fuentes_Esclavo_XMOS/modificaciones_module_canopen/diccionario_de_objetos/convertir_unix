@@ -1,0 +1,2 @@
+#!/bin/sh
+awk { sub("\r$", ""); print } co_eds_401.eds > CO_EDS_401.eds

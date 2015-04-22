@@ -1,0 +1,21 @@
+component pedestal "Adds or substract a fixed magnitude to input signal depending on its sign.";
+pin in float in_;
+pin out float out;
+param rw float amount """Value to add or substract to 'in'.""";
+param rw float deadzone """If 'in' absolute value is smaller than deadzone then no pedestal is introduced.""";
+function _ "Update 'out' based on 'in'";
+license "GPL";
+
+;;
+FUNCTION(_) {
+	hal_float_t in = in_;
+	if(in > deadzone) {
+		out = in + amount;
+	}
+	else if(in < (-deadzone)) {
+		out = in - amount;
+   }
+	else{
+		out = in;
+	}
+}
